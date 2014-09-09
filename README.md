@@ -1,0 +1,2 @@
+jpa-standalone
+==============
