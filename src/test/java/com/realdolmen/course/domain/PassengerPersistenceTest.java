@@ -2,26 +2,23 @@ package com.realdolmen.course.domain;
 
 import org.junit.Test;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.*;
 
 public class PassengerPersistenceTest extends PersistenceTest {
 
     private Passenger createPassenger(){
         LocalDate dob = LocalDate.of(1990,6,29);
         Date dateOfBirth = Date.from(dob.atStartOfDay(ZoneId.systemDefault()).toInstant());
-        Passenger p = new Passenger("900629","Aveline","Estié",(int)Math.floor(Math.random() * 5000),new byte[5],PassengerType.OCCASIONAL, dateOfBirth, new Date());
-        return p;
+        return new Passenger("900629","Aveline","Estié",(int)Math.floor(Math.random() * 5000),new byte[5],PassengerType.OCCASIONAL, dateOfBirth, new Date());
     }
     @Test
-    public void passengerHasBeenPersisted() throws Exception {
-        LocalDate dob = LocalDate.of(1990,6,29);
-        Date dateOfBirth = Date.from(dob.atStartOfDay(ZoneId.systemDefault()).toInstant());
-        Passenger p = new Passenger("900629","Aveline","Estié",0,new byte[5],PassengerType.OCCASIONAL, dateOfBirth, new Date());
+    public void passengerHasBeenCreated() throws Exception {
+        Passenger p = createPassenger();
         entityManager().persist(p);
         assertNotNull(p.getId());
     }
@@ -45,5 +42,44 @@ public class PassengerPersistenceTest extends PersistenceTest {
         assertSame(null, p.getDateLastUpdated());
         entityManager().persist(p);
         assertNotNull(p.getDateLastUpdated());
+    }
+
+    @Test
+    public void retrievePassengerById(){
+        Passenger p = createPassenger();
+        entityManager().persist(p);
+        entityManager().flush();
+        entityManager().clear();
+        Passenger passengerById = entityManager().find(Passenger.class, p.getId());
+        assertNotNull(passengerById);
+    }
+
+    @Test
+    public void updatePassenger(){
+        Passenger p = createPassenger();
+        entityManager().persist(p);
+        p.setFirstName("Aafke");
+        entityManager().flush();
+        entityManager().clear();
+        Passenger updatedPassenger = entityManager().find(Passenger.class, p.getId());
+        assertEquals("Aafke",updatedPassenger.getFirstName());
+    }
+
+    @Test
+    public void deletePassenger(){
+        // create ticket
+        Passenger p = createPassenger();
+        entityManager().persist(p);
+        entityManager().flush();
+        entityManager().clear();
+
+        // retrieve & delete ticket
+        Passenger passengerToDelete = entityManager().find(Passenger.class, p.getId());
+        entityManager().remove(passengerToDelete);
+        entityManager().flush();
+        entityManager().clear();
+
+        Passenger passengerToFind = entityManager().find(Passenger.class, p.getId());
+        assertNull(passengerToFind);
     }
 }

@@ -122,7 +122,10 @@ public class Passenger {
         return this.age;
     }
 
-    @PostLoad
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
     @PostPersist
     @PostUpdate
     public void calculateAge(){
