@@ -114,15 +114,19 @@ public class Passenger {
     }
 
     public String toString(){
-        return "Passenger: " + this.getId() + " - " + this.getFirstName() + " " + this.getLastName() + " - " + this.getSsn() + " - " + this.getFrequentFlyerMiles() + " - " + this.getPicture().toString() + " - " + this.getDateofBirth().toString() + " ("+this.getAge()+") - " + this.getLastFlight().toString() + " - " + this.getType();
+        return "Passenger: " + this.getId() + " - " + this.getFirstName() + " " + this.getLastName() + " - " + this.getSsn() + " - " + this.getFrequentFlyerMiles() + " - " + this.getPicture()[0] + " - " + this.getDateofBirth().toString() + " ("+this.getAge()+") - " + this.getLastFlight().toString() + " - " + this.getType();
     }
 
     public int getAge(){
-        this.age = calculateAge();
+        if(this.age == 0) calculateAge();
         return this.age;
     }
 
-    private int calculateAge(){
+    @PostLoad
+    @PostPersist
+    @PostUpdate
+    public void calculateAge(){
+        logger.trace("Calculation age of " + firstName + " " + lastName);
         LocalDate now = LocalDate.now();
         LocalDate birthday =  dateofBirth.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         int calcYear = now.getYear() - birthday.getYear();
@@ -131,6 +135,6 @@ public class Passenger {
         }else if(now.getMonthValue() == birthday.getMonthValue() && now.getDayOfMonth() < birthday.getDayOfMonth()){
             calcYear--;
         }
-        return calcYear;
+        this.age = calcYear;
     }
 }
