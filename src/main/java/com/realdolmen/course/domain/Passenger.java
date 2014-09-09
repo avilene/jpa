@@ -11,8 +11,6 @@ import java.util.Date;
     @NamedQuery(name="Passenger.findById", query="SELECT p from Passenger p WHERE p.id = :id")
 })
 public class Passenger {
-
-
     @Id
     @GeneratedValue
     private Long id;
@@ -98,7 +96,7 @@ public class Passenger {
     }
 
     public String toString(){
-        return "Passenger: " + this.getId() + " - " + this.getFirstName() + " " + this.getLastName() + " - " + this.getSsn() + " - " + this.getFrequentFlyerMiles() + " - " + this.getPicture().toString() + " - " + this.getDateofBirth().toString() + " ("+this.getAge()+") - " + this.getLastFlight().toString();
+        return "Passenger: " + this.getId() + " - " + this.getFirstName() + " " + this.getLastName() + " - " + this.getSsn() + " - " + this.getFrequentFlyerMiles() + " - " + this.getPicture().toString() + " - " + this.getDateofBirth().toString() + " ("+this.getAge()+") - " + this.getLastFlight().toString() + " - " + this.getType();
     }
 
     public int getAge(){
@@ -117,20 +115,4 @@ public class Passenger {
         }
         return calcYear;
     }
-
-    /* Hieronder staat alles voor Embeddable primary key
-    public PassengerId getId() {
-        return id;
-    }
-
-    public Passenger(PassengerId id, String firstName,int frequentFlyerMiles, byte[] picture) {
-        this.id = id;
-        this.firstName = firstName;
-        this.frequentFlyerMiles = frequentFlyerMiles;
-        this.picture = picture;
-    }
-
-    @EmbeddedId
-    private PassengerId id;*/
-
 }
