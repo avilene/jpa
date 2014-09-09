@@ -42,6 +42,14 @@ public class Passenger {
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastFlight;
 
+    private Date dateLastUpdated;
+
+    @PrePersist
+    @PreUpdate
+    private void updateDate(){
+        this.dateLastUpdated = new Date();
+    }
+
     public Passenger(String ssn, String firstName, String lastName,int frequentFlyerMiles, byte[] picture, PassengerType type, Date dateofBirth, Date lastFlight) {
         this.ssn = ssn;
         this.firstName = firstName;
@@ -61,6 +69,10 @@ public class Passenger {
 
     public PassengerType getType() {
         return type;
+    }
+
+    public Date getDateLastUpdated() {
+        return dateLastUpdated;
     }
 
     public Long getId() {
