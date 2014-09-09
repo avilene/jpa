@@ -1,5 +1,8 @@
 package com.realdolmen.course.domain;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -11,6 +14,8 @@ import java.util.Date;
     @NamedQuery(name="Passenger.findById", query="SELECT p from Passenger p WHERE p.id = :id")
 })
 public class Passenger {
+    @Transient
+    private Logger logger = LoggerFactory.getLogger(Passenger.class);
     @Id
     @GeneratedValue
     private Long id;
@@ -46,7 +51,8 @@ public class Passenger {
 
     @PrePersist
     @PreUpdate
-    private void updateDate(){
+    private void generateCreationDate(){
+        logger.trace("Generating creation date for entity with name " + firstName + " " + lastName);
         this.dateLastUpdated = new Date();
     }
 
