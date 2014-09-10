@@ -43,4 +43,9 @@ public class Ticket {
 
     protected Ticket() {
     }
+
+    public void setPassenger(Passenger passenger){
+        this.passenger = passenger;
+        passenger.addTicket(this);
+    }
 }

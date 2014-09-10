@@ -111,4 +111,8 @@ public class Passenger {
     public Date getLastFlight() {
         return lastFlight;
     }
+
+    public void addTicket(Ticket ticket) {
+        this.tickets.add(ticket);
+    }
 }

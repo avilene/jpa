@@ -1,9 +1,8 @@
 package com.realdolmen.course.domain;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
+import org.junit.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -11,44 +10,45 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
 /**
- * Created by Aveline Estié on 8/09/2014.
+ * Created by JUZAU33 on 8/09/2014.
  */
-
-public abstract class PersistenceTest {
+public class PersistenceTest {
 
     private static EntityManagerFactory entityManagerFactory;
     private EntityManager entityManager;
     private EntityTransaction transaction;
+    private static final Logger logger = LoggerFactory.getLogger(PersistenceTest.class);
 
     @BeforeClass
-    public static void initializeEntityManagerFactory(){
-        entityManagerFactory = Persistence.createEntityManagerFactory("GPU");
+    public static void initializeEntityManagerFactory() {
+        logger.info("Creating EntityManagerFactory");
+        entityManagerFactory = Persistence.createEntityManagerFactory("JorenPU");
     }
+
     @Before
-    public void initialize(){
+    public void initialize() {
+        logger.info("Creating transacted EntityManager");
         entityManager = entityManagerFactory.createEntityManager();
         transaction = entityManager.getTransaction();
         transaction.begin();
     }
 
     @After
-    public void destroy(){
-        if(transaction != null) {
-            transaction.commit();
-        }
-        if(entityManager != null){
-            entityManager.close();
-        }
-    }
-    @AfterClass
-    public static void destroyEntityManagerFactory(){
-        if(entityManagerFactory != null){
-            entityManagerFactory.close();
-        }
+    public void destroy() {
+        logger.info("Committing and closing transacted EntityManager");
+        if (transaction != null) transaction.commit();
+        if (entityManager != null) entityManager.close();
     }
 
-    // getter maken zodat je er aan kan zonder wijziging
-    protected EntityManager entityManager(){
+    @AfterClass
+    public static void destroyEntityManagerFactory() {
+        if (entityManagerFactory != null) entityManagerFactory.close();
+    }
+
+    protected EntityManager entityManager() {
         return this.entityManager;
     }
+
+
+
 }

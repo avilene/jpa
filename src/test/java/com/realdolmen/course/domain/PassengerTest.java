@@ -1,7 +1,5 @@
-package com.realdolmen.course;
+package com.realdolmen.course.domain;
 
-import com.realdolmen.course.domain.Passenger;
-import com.realdolmen.course.domain.PassengerType;
 import org.junit.Assert;
 import org.junit.Test;
 
