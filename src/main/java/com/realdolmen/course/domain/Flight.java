@@ -1,6 +1,7 @@
 package com.realdolmen.course.domain;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -21,6 +22,9 @@ public class Flight {
     @OneToMany(mappedBy="flight")
     private List<Ticket> tickets;
 
+    @Transient
+    private List<Passenger> passengers;
+
     public Flight() {
     }
 
@@ -28,5 +32,14 @@ public class Flight {
         this.number = number;
         this.departureTime = departureTime;
         this.arrivalTime = arrivalTime;
+    }
+
+    public List<Passenger> getPassengers(){
+        List<Passenger> retrievedPassengers = new ArrayList<Passenger>();
+        for(Ticket ticket : tickets){
+            retrievedPassengers.add(ticket.getPassenger());
+        }
+        this.passengers = retrievedPassengers;
+        return retrievedPassengers;
     }
 }

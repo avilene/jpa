@@ -4,11 +4,14 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import javax.persistence.FlushModeType;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 public class PassengerTest extends DataSetPersistenceTest {
 
@@ -42,7 +45,7 @@ public class PassengerTest extends DataSetPersistenceTest {
         passenger.setFirstName("Bart");
         entityManager().merge(passenger);
         entityManager().flush();
-        Assert.assertEquals("Bart", passenger.getFirstName());
+        assertEquals("Bart", passenger.getFirstName());
     }
 
     @Test
@@ -60,7 +63,7 @@ public class PassengerTest extends DataSetPersistenceTest {
         Passenger passenger = entityManager().find(Passenger.class, 1L);
         passenger.setFirstName("Dieter");
         entityManager().refresh(passenger);
-        Assert.assertEquals("Aveline", passenger.getFirstName());
+        assertEquals("Aveline", passenger.getFirstName());
     }
 
     @Test
@@ -73,7 +76,7 @@ public class PassengerTest extends DataSetPersistenceTest {
     @Test
     public void ageIsCalculated() {
         Passenger passenger = entityManager().find(Passenger.class, 1L);
-        Assert.assertEquals(24, passenger.getAge());
+        assertEquals(24, passenger.getAge());
     }
 
     @Test
@@ -86,4 +89,15 @@ public class PassengerTest extends DataSetPersistenceTest {
         Date secondDate = passenger.getDateLastUpdated();
         Assert.assertTrue((firstDate.getTime() < secondDate.getTime()));
     }
+
+    @Test
+    public void canAddTicket(){
+        Passenger passenger = entityManager().find(Passenger.class, 1L);
+        Ticket t = new Ticket(BigDecimal.valueOf(399.00),new Date(),"AMS");
+        passenger.addTicket(t);
+        assertEquals(2, passenger.getTickets().size());
+    }
+
+
+
 }

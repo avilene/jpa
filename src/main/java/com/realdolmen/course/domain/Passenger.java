@@ -123,6 +123,9 @@ public class Passenger {
     }
 
     public void addTicket(Ticket ticket) {
+        if(this.tickets == null){
+            this.tickets = new ArrayList<Ticket>();
+        }
         this.tickets.add(ticket);
     }
 

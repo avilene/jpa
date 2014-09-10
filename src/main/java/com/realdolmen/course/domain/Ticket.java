@@ -51,4 +51,8 @@ public class Ticket {
         this.passenger = passenger;
         passenger.addTicket(this);
     }
+
+    public Passenger getPassenger() {
+        return passenger;
+    }
 }
