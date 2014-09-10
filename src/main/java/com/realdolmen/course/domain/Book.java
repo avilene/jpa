@@ -1,29 +1,32 @@
 package com.realdolmen.course.domain;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
 @Entity
 public class Book {
-    public enum Genre {
-        BIOGRAPHY, FANTASY, THRILLER
+
+    public static enum Genre {
+        Fantasy, Thriller
     }
 
     @Id
     @GeneratedValue
     private Integer id;
-
     private String title;
     private String author;
 
-    @Enumerated(EnumType.STRING)
-    private Genre genre;
+    /**
+     * Used by JPA.
+     */
+    protected Book() {
+    }
 
     public Book(String title, String author) {
         this.title = title;
         this.author = author;
     }
-
-
 
     public Integer getId() {
         return id;
@@ -35,15 +38,5 @@ public class Book {
 
     public String getAuthor() {
         return author;
-    }
-
-    public Genre getGenre() {
-        return genre;
-    }
-
-    /*
-     * Used by JPA.
-     */
-    protected Book() {
     }
 }

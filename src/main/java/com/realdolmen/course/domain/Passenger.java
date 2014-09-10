@@ -4,81 +4,63 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.persistence.*;
-import java.time.LocalDate;
-import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 @Entity
-@NamedQueries({
-    @NamedQuery(name="Passenger.findAll", query="SELECT p from Passenger p"),
-    @NamedQuery(name="Passenger.findById", query="SELECT p from Passenger p WHERE p.id = :id")
-})
 public class Passenger {
+
     @Transient
     private Logger logger = LoggerFactory.getLogger(Passenger.class);
+
     @Id
     @GeneratedValue
     private Long id;
 
-    @Column(nullable = false, updatable = false)
     private String ssn;
-
-    @Column(length=50)
     private String firstName;
-
-    @Column(length=50)
     private String lastName;
-
     private int frequentFlyerMiles;
 
-    @Basic(fetch = FetchType.LAZY)
-    private byte[] picture;
-
-    @Column(nullable = false)
-    private PassengerType type;
-
-    @Column(nullable = false, updatable = false)
     @Temporal(TemporalType.DATE)
-    private Date dateofBirth;
+    private Date dateOfBirth;
 
     @Transient
     private int age;
+    @Enumerated(EnumType.STRING)
+    private PassengerType passengerType;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastFlight;
 
+    @Temporal(TemporalType.TIMESTAMP)
     private Date dateLastUpdated;
 
-    @PrePersist
-    @PreUpdate
-    private void generateCreationDate(){
-        logger.trace("Generating creation date for entity with name " + firstName + " " + lastName);
-        this.dateLastUpdated = new Date();
-    }
+    @OneToMany(mappedBy = "passenger")
+    private List<Ticket> tickets = new ArrayList<>();
 
-    public Passenger(String ssn, String firstName, String lastName,int frequentFlyerMiles, byte[] picture, PassengerType type, Date dateofBirth, Date lastFlight) {
+    // Constructors
+    public Passenger(String ssn, String firstName, String lastName, int frequentFlyerMiles, Date dateOfBirth, PassengerType passengerType, Date lastFlight) {
         this.ssn = ssn;
         this.firstName = firstName;
         this.lastName = lastName;
         this.frequentFlyerMiles = frequentFlyerMiles;
-        this.picture = picture;
-        this.type = type;
-        this.dateofBirth = dateofBirth;
+        this.dateOfBirth = dateOfBirth;
+        this.passengerType = passengerType;
         this.lastFlight = lastFlight;
     }
 
-    /*
-     * Used by JPA.
-     */
-    public Passenger() {
+    protected Passenger() {
     }
 
-    public PassengerType getType() {
-        return type;
-    }
-
-    public Date getDateLastUpdated() {
-        return dateLastUpdated;
+    @PrePersist
+    @PreUpdate
+    private void generateNewTimestamp() {
+        logger.info("Generating creation date for entity with name " +
+                firstName + " " + lastName);
+        this.dateLastUpdated = new Date();
     }
 
     public Long getId() {
@@ -101,43 +83,32 @@ public class Passenger {
         return frequentFlyerMiles;
     }
 
-    public byte[] getPicture() {
-        return picture;
+    public Date getDateOfBirth() {
+        return dateOfBirth;
     }
 
-    public Date getDateofBirth() {
-        return dateofBirth;
+    public int getAge() {
+        Calendar calender1 = Calendar.getInstance();
+        Calendar calender2 = Calendar.getInstance();
+        calender1.setTime(this.getDateOfBirth());
+        calender2.setTime(new Date());
+
+        return calender2.get(Calendar.YEAR) - calender1.get(Calendar.YEAR);
     }
 
-    public Date getLastFlight() {
-        return lastFlight;
-    }
-
-    public String toString(){
-        return "Passenger: " + this.getId() + " - " + this.getFirstName() + " " + this.getLastName() + " - " + this.getSsn() + " - " + this.getFrequentFlyerMiles() + " - " + this.getPicture()[0] + " - " + this.getDateofBirth().toString() + " ("+this.getAge()+") - " + this.getLastFlight().toString() + " - " + this.getType();
-    }
-
-    public int getAge(){
-        if(this.age == 0) calculateAge();
-        return this.age;
+    public Date getDateLastUpdated() {
+        return dateLastUpdated;
     }
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
-    @PostPersist
-    @PostUpdate
-    public void calculateAge(){
-        logger.trace("Calculation age of " + firstName + " " + lastName);
-        LocalDate now = LocalDate.now();
-        LocalDate birthday =  dateofBirth.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        int calcYear = now.getYear() - birthday.getYear();
-        if(now.getMonthValue() < birthday.getMonthValue()){
-            calcYear--;
-        }else if(now.getMonthValue() == birthday.getMonthValue() && now.getDayOfMonth() < birthday.getDayOfMonth()){
-            calcYear--;
-        }
-        this.age = calcYear;
+    public PassengerType getPassengerType() {
+        return passengerType;
+    }
+
+    public Date getLastFlight() {
+        return lastFlight;
     }
 }

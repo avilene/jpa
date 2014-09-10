@@ -1,43 +1,38 @@
 package com.realdolmen.course.domain;
 
-import javax.persistence.*;
-import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
+/**
+ * Created by JUZAU33 on 8/09/2014.
+ */
 public class Runner {
     public static void main(String[] args) {
-        System.out.println("Runner is running");
-        /*EntityManagerFactory entityManagerFactory = null;
+
+        EntityManagerFactory entityManagerFactory = null;
         EntityManager entityManager = null;
+
+
         try {
-            entityManagerFactory = Persistence.createEntityManagerFactory("GPU");
+
+            entityManagerFactory = Persistence.createEntityManagerFactory("JorenPU");
 
             entityManager = entityManagerFactory.createEntityManager();
 
-            EntityTransaction transaction = entityManager.getTransaction();
-            transaction.begin();
+            entityManager.getTransaction().begin();
 
-            // date invoegen
-            Passenger p = new Passenger("900629","Aveline","Estié",1500,new byte[5]);
-            entityManager.persist(p);
-            p = new Passenger("880501","Dieter","Bocklandt",1499,new byte[5]);
-            entityManager.persist(p);
+            entityManager.persist(new Book("Nineteen Eighty Four", "George Orwell"));
 
-            Query namedQuery = entityManager.createNamedQuery("Passenger.findAll");
-            List<Passenger> resultList = namedQuery.getResultList();
-            for(Passenger pass : resultList){
-                System.out.println(pass.toString());
-            }
-            transaction.commit();
-        }catch(Exception ex){
-            System.out.println(ex.getMessage());
-        }finally{
-            if(entityManager != null){
+            entityManager.getTransaction().commit();
+
+        } finally {
+            if (entityManager != null) {
                 entityManager.close();
             }
-            if(entityManagerFactory != null){
+            if (entityManagerFactory != null) {
                 entityManagerFactory.close();
             }
-        }*/
-        System.out.println("Runner is done running");
+        }
     }
 }

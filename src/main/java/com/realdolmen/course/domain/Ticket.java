@@ -9,22 +9,24 @@ public class Ticket {
 
     @Id
     @GeneratedValue
-    private int id;
+    private Long id;
 
     private BigDecimal price;
-
-    @Temporal(TemporalType.DATE)
     private Date dateOfDeparture;
-
     private String destination;
 
-    public Ticket() {
-    }
+    @ManyToOne
+    private Passenger passenger;
+
 
     public Ticket(BigDecimal price, Date dateOfDeparture, String destination) {
         this.price = price;
         this.dateOfDeparture = dateOfDeparture;
         this.destination = destination;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public BigDecimal getPrice() {
@@ -39,19 +41,6 @@ public class Ticket {
         return destination;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
-    public void setDateOfDeparture(Date dateOfDeparture) {
-        this.dateOfDeparture = dateOfDeparture;
-    }
-
-    public void setDestination(String destination) {
-        this.destination = destination;
+    protected Ticket() {
     }
 }
