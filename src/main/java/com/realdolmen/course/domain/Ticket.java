@@ -18,6 +18,9 @@ public class Ticket {
     @ManyToOne
     private Passenger passenger;
 
+    @ManyToOne
+    private Flight flight;
+
 
     public Ticket(BigDecimal price, Date dateOfDeparture, String destination) {
         this.price = price;

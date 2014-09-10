@@ -1,5 +1,6 @@
 package com.realdolmen.course.domain;
 
+import org.hibernate.annotations.Cascade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,8 +39,14 @@ public class Passenger {
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateLastUpdated;
 
-    @OneToMany(mappedBy = "passenger")
+    @OneToMany(mappedBy = "passenger",cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Ticket> tickets = new ArrayList<>();
+
+    @Lob
+    private List<String> preferences;
+
+    @Embedded
+    private Address address;
 
     // Constructors
     public Passenger(String ssn, String firstName, String lastName, int frequentFlyerMiles, Date dateOfBirth, PassengerType passengerType, Date lastFlight) {
@@ -114,5 +121,17 @@ public class Passenger {
 
     public void addTicket(Ticket ticket) {
         this.tickets.add(ticket);
+    }
+
+    public List<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public List<String> getPreferences() {
+        return preferences;
+    }
+
+    public Address getAddress() {
+        return address;
     }
 }
