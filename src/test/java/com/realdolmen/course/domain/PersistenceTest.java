@@ -9,9 +9,6 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
-/**
- * Created by JUZAU33 on 8/09/2014.
- */
 public class PersistenceTest {
 
     private static EntityManagerFactory entityManagerFactory;
@@ -22,7 +19,7 @@ public class PersistenceTest {
     @BeforeClass
     public static void initializeEntityManagerFactory() {
         logger.info("Creating EntityManagerFactory");
-        entityManagerFactory = Persistence.createEntityManagerFactory("JorenPU");
+        entityManagerFactory = Persistence.createEntityManagerFactory("GPU");
     }
 
     @Before

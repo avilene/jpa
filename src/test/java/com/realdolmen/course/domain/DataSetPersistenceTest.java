@@ -24,11 +24,10 @@ public class DataSetPersistenceTest extends PersistenceTest {
     @Before
     public void loadDataSet() throws Exception {
         logger.info("Loading dataset");
-        Connection connection1 = DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "root", "mysql");
+        Connection connection1 = DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "root", "root");
         IDatabaseConnection connection = new DatabaseConnection(connection1);
 
         IDataSet dataset = new FlatXmlDataSetBuilder().build(getClass().getResource("/data.xml"));
-
 
         DatabaseConfig dbConfig = connection.getConfig();
         dbConfig.setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new MySqlDataTypeFactory());

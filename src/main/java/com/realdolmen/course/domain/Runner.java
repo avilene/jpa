@@ -16,7 +16,7 @@ public class Runner {
 
         try {
 
-            entityManagerFactory = Persistence.createEntityManagerFactory("JorenPU");
+            entityManagerFactory = Persistence.createEntityManagerFactory("GPU");
 
             entityManager = entityManagerFactory.createEntityManager();
 
