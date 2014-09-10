@@ -14,12 +14,9 @@ import org.slf4j.LoggerFactory;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
-/**
- * Created by JUZAU33 on 10/09/2014.
- */
 public class DataSetPersistenceTest extends PersistenceTest {
 
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+    private final Logger logger = LoggerFactory.getLogger(DataSetPersistenceTest.class);
 
     @Before
     public void loadDataSet() throws Exception {

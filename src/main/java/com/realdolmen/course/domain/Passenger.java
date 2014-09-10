@@ -42,14 +42,15 @@ public class Passenger {
     @OneToMany(mappedBy = "passenger",cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Ticket> tickets = new ArrayList<>();
 
-    @Lob
+    @ElementCollection
+    @CollectionTable(name = "preferences", joinColumns = @JoinColumn(name="passengerId"))
     private List<String> preferences;
 
     @Embedded
     private Address address;
 
     // Constructors
-    public Passenger(String ssn, String firstName, String lastName, int frequentFlyerMiles, Date dateOfBirth, PassengerType passengerType, Date lastFlight) {
+    public Passenger(String ssn, String firstName, String lastName, int frequentFlyerMiles, Date dateOfBirth, PassengerType passengerType, Date lastFlight, Address address, List<String> preferences) {
         this.ssn = ssn;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -57,6 +58,8 @@ public class Passenger {
         this.dateOfBirth = dateOfBirth;
         this.passengerType = passengerType;
         this.lastFlight = lastFlight;
+        this.address = address;
+        this.preferences = preferences;
     }
 
     protected Passenger() {
@@ -133,5 +136,9 @@ public class Passenger {
 
     public Address getAddress() {
         return address;
+    }
+
+    public void addPreference(String preference){
+        this.preferences.add(preference);
     }
 }

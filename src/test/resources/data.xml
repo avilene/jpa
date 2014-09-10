@@ -1,3 +1,4 @@
 <dataset>
-    <passenger id="1" firstName="Joren" lastName="Uitzetter" ssn="6666644887" frequentFlyerMiles="80" dateOfBirth="1992-08-06" passengerType="REGULAR" lastFlight="2013-08-07" dateLastUpdated="2014-09-10" />
+    <passenger id="1" firstName="Aveline" lastName="Estié" ssn="133710101" frequentFlyerMiles="80" dateOfBirth="1990-06-29" passengerType="OCCASIONAL" lastFlight="2013-08-07" dateLastUpdated="2014-09-10" street1="Test" street2="Tester" city="L33TT0WN" zipcode="1337" country="Ergens" />
+    <preferences passengerId="1" preferences="Testje"/>
 </dataset>

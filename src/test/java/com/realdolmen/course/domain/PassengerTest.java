@@ -6,7 +6,9 @@ import org.junit.Test;
 import javax.persistence.FlushModeType;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class PassengerTest extends DataSetPersistenceTest {
 
@@ -15,12 +17,15 @@ public class PassengerTest extends DataSetPersistenceTest {
         Date dateOfBirth = null;
         Date lastFlight = null;
         try {
-            dateOfBirth = new SimpleDateFormat("yyyy-MM-dd").parse("1992-08-06");
+            dateOfBirth = new SimpleDateFormat("yyyy-MM-dd").parse("1990-06-29");
             lastFlight = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2014-09-02 13:15:43");
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return new Passenger("654654654", "Joren", "Uitzetter", 846, dateOfBirth, PassengerType.REGULAR, lastFlight);
+        Address address = new Address("Test","","Ergens","1337","L33TT0WN");
+        List<String> preferences = new ArrayList<>();
+        preferences.add("Testje");
+        return new Passenger("654654654", "Aveline", "Estié", 846, dateOfBirth, PassengerType.REGULAR, lastFlight, address, preferences);
     }
 
     @Test
@@ -53,9 +58,9 @@ public class PassengerTest extends DataSetPersistenceTest {
     public void canBeRefreshed() {
         entityManager().setFlushMode(FlushModeType.COMMIT);
         Passenger passenger = entityManager().find(Passenger.class, 1L);
-        passenger.setFirstName("Bart");
+        passenger.setFirstName("Dieter");
         entityManager().refresh(passenger);
-        Assert.assertEquals("Joren", passenger.getFirstName());
+        Assert.assertEquals("Aveline", passenger.getFirstName());
     }
 
     @Test
@@ -68,7 +73,7 @@ public class PassengerTest extends DataSetPersistenceTest {
     @Test
     public void ageIsCalculated() {
         Passenger passenger = entityManager().find(Passenger.class, 1L);
-        Assert.assertEquals(22, passenger.getAge());
+        Assert.assertEquals(24, passenger.getAge());
     }
 
     @Test
@@ -76,7 +81,7 @@ public class PassengerTest extends DataSetPersistenceTest {
         Passenger passenger = createPassenger();
         entityManager().persist(passenger);
         Date firstDate = passenger.getDateLastUpdated();
-        passenger.setFirstName("Test");
+        passenger.setFirstName("Dieter");
         entityManager().flush();
         Date secondDate = passenger.getDateLastUpdated();
         Assert.assertTrue((firstDate.getTime() < secondDate.getTime()));
